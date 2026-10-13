@@ -1,34 +1,12 @@
-class coordinator:
-    floors = []
+from time import sleep
 
-    def __init__(self, count_elevator):
-        self.count_elevator = count_elevator
+class Elevator:
 
-    def call(self, num_floors):
-        if self.floors.count(num_floors):
-            if self.floors == num_floors:
-                return elevator.open()
-            else:
-                return elevator.movement(num_floors)
-        else:
-            print(f'Error: в доме нет этажа {num_floors}')
-
-class elevator:
-
-    def __init__(self, max_weight, speed, doors, floor):
+    def __init__(self, max_weight, doors, floor):
         self.max_weight = max_weight
-        self.speed = speed
         self.doors = doors
         self.floor = floor
 
-    def movement(self, n):
-        if isinstance(n, int):
-            if self.floors.count(n):
-                self.floor = n
-            else:
-                print(f'Error: в доме нет этажа {n}')
-        else:
-            print("Error: этаж должно быть числом")
 
     def open(self):
         self.doors = True
@@ -37,4 +15,33 @@ class elevator:
     def close(self):
         self.doors = False
         print("Двери закрыты")
+
+class Coordinator:
     
+    def __init__(self, count_elevator, elevator_obj, max_floors):
+        self.count_elevator = count_elevator
+        self.elevator = elevator_obj
+        self.max_floors = max_floors
+
+    def time(self, cnt):
+        return cnt*6 # скорость лифтов равна 10 этажей в минуту
+
+    def call(self, num_floor):
+        if num_floor in self.max_floors:
+            if self.elevator.floor == num_floor:
+                print("Лифт уже на этом этаже")
+                return self.elevator.open()
+            else:
+                return self.movement(num_floor)
+        else:
+            print(f'Error: в доме нет этажа {num_floor}')
+
+    def movement(self, target_floor, passenger_time=10):
+        if target_floor in self.max_floors:
+            self.elevator.close()
+            sleep(self.time(abs(target_floor - self.elevator.floor)))
+            self.elevator.floor = target_floor
+            print(f"Лифт переместился на {target_floor} этаж")
+            self.elevator.open()
+            sleep(passenger_time)
+            self.elevator.close()
