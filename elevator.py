@@ -2,7 +2,7 @@ from time import sleep
 
 class Elevator:
 
-    def __init__(self, max_weight, doors, floor):
+    def __init__(self, max_weight: int, doors: bool, floor: int):
         self.max_weight = max_weight
         self.doors = doors
         self.floor = floor
@@ -18,15 +18,15 @@ class Elevator:
 
 class Coordinator:
     
-    def __init__(self, count_elevator, elevator_obj, max_floors):
+    def __init__(self, count_elevator: int, elevator_obj: int, max_floors: list[int]):
         self.count_elevator = count_elevator
         self.elevator = elevator_obj
         self.max_floors = max_floors
 
-    def time(self, cnt):
+    def time(self, cnt: int):
         return cnt*6 # скорость лифтов равна 10 этажей в минуту
 
-    def call(self, num_floor):
+    def call(self, num_floor: int):
         if num_floor in self.max_floors:
             if self.elevator.floor == num_floor:
                 print("Лифт уже на этом этаже")
@@ -36,7 +36,7 @@ class Coordinator:
         else:
             print(f'Error: в доме нет этажа {num_floor}')
 
-    def movement(self, target_floor, passenger_time=10):
+    def movement(self, target_floor: int, passenger_time: int = 10):
         if target_floor in self.max_floors:
             self.elevator.close()
             sleep(self.time(abs(target_floor - self.elevator.floor)))
